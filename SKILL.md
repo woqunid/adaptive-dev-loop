@@ -33,6 +33,7 @@ description: 当用户通过 /adaptive-dev-loop 显式唤醒、或丢入一个�
 | 8 | 代码审查 | 审查结论（按 `references/review-checklist.md`） | — |
 | ↺ | 自适应循环 | 发现问题 → 按根因回流到 4/5/6 或 2 → 重新走到 7、8 | — |
 | ✓ | 交付汇报 | `final-report.md` | — |
+| 9 | 复盘与自我进化（仅"明显不顺"时触发） | 改进提议 → 审批 → 改 skill 自身 → 自检/回滚 → `_evolution/CHANGELOG.md` | **审批门** |
 
 ## 详细步骤
 
@@ -135,12 +136,34 @@ dev-loop/                         本 skill 所有产物的归档目录（项目
 
 收敛后产出 `final-report.md` 并向用户汇报：完成了什么 / 改了哪些文件 / 跑了哪些验证命令及结果 / 经过几轮循环修了哪些问题 / 剩余风险 / 是否达到可交付状态。
 
+## 步骤 9 — 复盘与自我进化（条件触发）
+
+本步骤**默认不执行**，只有本次运行"明显不顺"时才触发，用于让 skill 从真实使用中纠偏、完善、优化自己。完整机制见 `references/evolution.md`。
+
+**触发信号**（命中任一即进入；否则跳过、正常结束）：
+- 自适应循环回流 ≥ 2 轮
+- 任一确认门被用户否决或要求大改
+- grilling 中需求理解被反复纠正（≥ 2 次）
+- 触达迭代上限而升级
+- 过程中用户明确表达对流程 / skill 的不满
+
+**三条硬约束**（务必遵守，详见 evolution.md）：
+- **作用域**：只改本 skill 自身目录的文件，绝不碰其他 skill 或用户项目代码。
+- **保护区**：8 阶段闭环、边界安全规则、进化机制本身、description 触发语义**禁止自我修改**；只允许进化措辞、grilling 问法、模板与 checklist 等非结构、非安全部分。
+- **独立评估**：用独立 critic（优先子 agent，无则切换对抗视角自审）判断"偶发 vs 系统性"，只改系统性问题，避免过拟合单次运行。
+
+**流程**：收集摩擦点 → critic 评估 → 产出改进提议（diff + 理由 + 风险，过滤掉触碰保护区的）→ **【审批门】展示给用户逐条批准** → 备份到 `_evolution/backups/<时间戳>/` → 应用 → 跑 `scripts/structure-check.sh` 自检 → 通过则记 `_evolution/CHANGELOG.md`，失败则自动回滚并报告。
+
 ## 参考文档
 
 方法类：
 - **`references/grilling.md`** — 步骤 2、4 两个门的盘问式访谈方法（grilling）
 - **`references/boundaries.md`** — 能做/需确认/不能做的完整边界规则（编码前必读）
 - **`references/review-checklist.md`** — 自测与代码审查的逐项清单
+- **`references/evolution.md`** — 步骤 9 自我进化机制（触发 / 保护区 / 审批 / 自检 / 回滚）
+
+脚本类：
+- **`scripts/structure-check.sh`** — 结构 + 保护区不变量回归测试（自我进化后自动运行，失败即回滚）
 
 产物模板类（生成到 `dev-loop/<需求短名>/`）：
 - **`references/readme-template.md`** — 产物目录索引 README.md 模板
