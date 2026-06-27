@@ -52,7 +52,7 @@
 对每条获批改动：
 1. **备份**：把当前 skill 整体复制到 `_evolution/backups/<时间戳>/`。
 2. **应用**改动。
-3. **自检**：运行 `scripts/structure-check.sh`（结构 + 保护区不变量回归测试）。
+3. **自检**：运行 `python scripts/structure_check.py`（结构 + 保护区不变量回归测试）；Unix 环境也可运行 `scripts/structure-check.sh` 包装脚本。
 4. 自检**通过** → 追加 `_evolution/CHANGELOG.md`。
 5. 自检**失败** → 从备份**自动回滚**，向用户报告"本次进化未通过自检，已回滚"，并附失败原因。
 
