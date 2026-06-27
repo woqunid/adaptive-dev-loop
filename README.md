@@ -15,15 +15,15 @@
 
 | 阶段 | 产物 |
 |------|------|
-| 需求接受 | `dev-loop/<需求短名>/README.md`、`requirement.md` |
-| 需求澄清 | 确认后的需求理解与验收标准 |
-| 理解项目与影响分析 | `analysis.md` |
-| 修改方案设计 | `analysis.md` 中的方案、风险和验证章节 |
-| 任务拆分 | `tasks.md` |
+| 需求接受 | `dev-loop/YYYY-MM-DD/<需求短名>/loop.md` |
+| 需求澄清 | `loop.md` 中确认后的需求理解与验收标准 |
+| 理解项目与影响分析 | `loop.md`，复杂时拆 `analysis.md` |
+| 修改方案设计 | `loop.md` 中的方案、风险和验证章节 |
+| 任务拆分 | `loop.md` 中的任务表 |
 | 编码实现 | 项目代码修改与任务状态更新 |
-| 自测 | `iteration-log.md` 中的测试和构建结果 |
-| 代码审查 | `iteration-log.md` 中的审查记录 |
-| 交付汇报 | `final-report.md` |
+| 自测 | `loop.md` 中的测试和构建结果，失败回流时拆 `iteration-log.md` |
+| 代码审查 | `loop.md` 中的审查记录 |
+| 交付汇报 | `loop.md` 的交付报告章节 |
 
 ## 仓库结构
 
@@ -36,6 +36,7 @@
     ├── final-report-template.md
     ├── grilling.md
     ├── iteration-log-template.md
+    ├── loop-template.md
     ├── readme-template.md
     ├── review-checklist.md
     └── tasks-template.md
@@ -43,7 +44,7 @@
 
 ## 关键规则
 
-- 所有阶段都要生成可检查的 Markdown 产物，默认放在 `dev-loop/<需求短名>/`。
+- 所有阶段都要生成可检查的 Markdown 产物，默认放在 `dev-loop/YYYY-MM-DD/<需求短名>/loop.md`。
 - 需求澄清和修改方案设计必须经过 grilling 和用户确认；若用户明确授权按推荐自动推进，也必须记录候选方案、推荐项、验收标准和授权依据。
 - 自测或审查失败时，不做静默降级，不通过跳过测试、吞异常或改断言伪装通过。
 - 触达迭代上限或同一问题反复出现时，停止自动尝试并升级给用户决策。
@@ -57,4 +58,4 @@
 /adaptive-dev-loop 给订单模块增加批量导出功能
 ```
 
-skill 会根据 `SKILL.md` 中定义的流程推进，并使用 `references/` 下的模板生成需求、分析、任务、迭代日志和交付报告。自检优先运行 `python scripts/structure_check.py`。
+skill 会根据 `SKILL.md` 中定义的流程推进，默认生成单个 `loop.md`；复杂分析、失败回流或完整审计模式才使用 `references/` 下的拆分模板。自检优先运行 `python scripts/structure_check.py`。

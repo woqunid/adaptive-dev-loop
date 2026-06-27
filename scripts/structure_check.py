@@ -20,6 +20,7 @@ REFERENCES = ROOT / "references"
 
 REQUIRED_STAGES = [f"步骤 {index}" for index in range(FIRST_STAGE, LAST_STAGE + 1)]
 REQUIRED_TEMPLATES = [
+    "loop-template.md",
     "readme-template.md",
     "analysis-template.md",
     "tasks-template.md",
@@ -32,6 +33,7 @@ PROTECTED_REFERENCE_TERMS = {
     "references/boundaries.md": ["绝不做", "掩盖"],
 }
 GATE_TERMS = ["按推荐自动推进", "候选方案", "推荐项", "验收标准", "授权依据"]
+ARTIFACT_TERMS = ["loop.md", "YYYY-MM-DD", "dev-loop/YYYY-MM-DD", "完整审计模式"]
 
 
 class Reporter:
@@ -99,9 +101,15 @@ def check_reference_terms(reporter: Reporter) -> None:
 
 def check_gate_terms(reporter: Reporter) -> None:
     print("[6] confirmation gate terms")
-    combined = "\n".join(read_text(path) for path in [SKILL, REFERENCES / "grilling.md", REFERENCES / "analysis-template.md"])
+    combined = "\n".join(read_text(path) for path in [SKILL, REFERENCES / "grilling.md", REFERENCES / "loop-template.md"])
     for term in GATE_TERMS:
         reporter.ok(term) if term in combined else reporter.no(f"missing {term}")
+
+
+def check_artifact_terms(reporter: Reporter, skill_text: str) -> None:
+    print("[7] compact artifact terms")
+    for term in ARTIFACT_TERMS:
+        reporter.ok(term) if term in skill_text else reporter.no(f"missing {term}")
 
 
 def main() -> int:
@@ -116,6 +124,7 @@ def main() -> int:
     check_templates(reporter)
     check_reference_terms(reporter)
     check_gate_terms(reporter)
+    check_artifact_terms(reporter, skill_text)
     print(f"\nstructure-check: PASS={reporter.passed} FAIL={reporter.failed}")
     return EXIT_OK if reporter.failed == 0 else EXIT_FAILED_CHECKS
 

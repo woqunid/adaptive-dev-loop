@@ -35,7 +35,7 @@
 ## 流程
 
 ### 1. 收集摩擦点
-从产物目录（`iteration-log.md` / `requirement.md` / `analysis.md` + 对话）提取本次"流程摩擦点"清单：哪一步、什么现象、命中哪个触发信号。
+从产物目录（`loop.md` / `iteration-log.md` / `analysis.md` + 对话）提取本次"流程摩擦点"清单：哪一步、什么现象、命中哪个触发信号。
 
 ### 2. 独立 critic 评估（防自夸 + 防过拟合）
 用独立、对抗性的视角逐条审视——**优先用子 agent 扮演 critic**；无子 agent 的环境（如 Codex）则**显式声明"切换到 critic 对抗视角"再自审**。每条判断：
